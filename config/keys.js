@@ -1,6 +1,5 @@
-const env = process.env.NODE_ENV || 'development';
-
-module.exports =
-  env === 'development'
+module.exports = (
+  process.env.NODE_ENV === 'development'
     ? require('./dev')
-    : require('./prod');
+    : require('./prod')
+);
