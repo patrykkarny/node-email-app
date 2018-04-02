@@ -9,7 +9,9 @@
   },
   "scripts": {
     "start": "node index.js",
-    "start:dev": "nodemon index.js -o"
+    "server": "nodemon index.js",
+    "client": "yarn --cwd client start",
+    "start:dev": "concurrently \"yarn server\" \"yarn client\""
   },
   "dependencies": {
     "cookie-session": "^2.0.0-beta.3",
@@ -20,6 +22,8 @@
     "passport-google-oauth20": "^1.0.0"
   },
   "devDependencies": {
+    "concurrently": "^3.5.1",
+    "create-react-app": "^1.5.2",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.9.0"
