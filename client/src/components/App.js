@@ -1,20 +1,39 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, Component } from 'react';
+import PropTypes from 'prop-types';
 import { BrowserRouter, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-const Landing = () => <h1>Landing</h1>;
+import * as actions from 'actions';
+
+import { Header } from './Header';
+import { Landing } from './Landing';
+
 const Dashboard = () => <h1>Dashboard</h1>;
 const SurveyNew = () => <h1>SurveyNew</h1>;
-const Header = () => <h1>Header</h1>;
 
-export const App = () => (
-  <Fragment>
-    <BrowserRouter>
-      <Fragment>
-        <Header />
-        <Route exact path="/" component={Landing} />
-        <Route exact path="/surveys" component={Dashboard} />
-        <Route path="/surveys/new" component={SurveyNew} />
-      </Fragment>
-    </BrowserRouter>
-  </Fragment>
-);
+class AppBase extends Component {
+  componentDidMount() {
+    this.props.fetchUser();
+  }
+
+  render() {
+    return (
+      <div className="container">
+        <BrowserRouter>
+          <Fragment>
+            <Header />
+            <Route exact path="/" component={Landing} />
+            <Route exact path="/surveys" component={Dashboard} />
+            <Route path="/surveys/new" component={SurveyNew} />
+          </Fragment>
+        </BrowserRouter>
+      </div>
+    );
+  }
+}
+
+AppBase.propTypes = {
+  fetchUser: PropTypes.func.isRequired,
+};
+
+export const App = connect(null, actions)(AppBase);
