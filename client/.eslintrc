@@ -11,10 +11,6 @@
     "NODE_ENV": true
   },
   "settings": {
-    "import/resolver": { 
-      "node": { 
-        "paths": ["src"]
-      }
-    }
+    "import/resolver": { "node": { "paths": ["src"] } }
   }
 }

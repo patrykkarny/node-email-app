@@ -7,9 +7,8 @@ import * as actions from 'actions';
 
 import { Header } from './Header';
 import { Landing } from './Landing';
-
-const Dashboard = () => <h1>Dashboard</h1>;
-const SurveyNew = () => <h1>SurveyNew</h1>;
+import { Dashboard } from './Dashboard';
+import { SurveyNew } from './surveys/SurveyNew';
 
 class AppBase extends Component {
   componentDidMount() {
@@ -18,16 +17,16 @@ class AppBase extends Component {
 
   render() {
     return (
-      <div className="container">
-        <BrowserRouter>
-          <Fragment>
-            <Header />
+      <BrowserRouter>
+        <Fragment>
+          <Header />
+          <div className="container">
             <Route exact path="/" component={Landing} />
             <Route exact path="/surveys" component={Dashboard} />
             <Route path="/surveys/new" component={SurveyNew} />
-          </Fragment>
-        </BrowserRouter>
-      </div>
+          </div>
+        </Fragment>
+      </BrowserRouter>
     );
   }
 }

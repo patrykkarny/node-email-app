@@ -44,10 +44,7 @@ const HeaderBase = ({ auth }) => (
 );
 
 HeaderBase.propTypes = {
-  auth: PropTypes.oneOfType([
-    PropTypes.bool,
-    PropTypes.string,
-  ]),
+  auth: PropTypes.any, // eslint-disable-line
 };
 
 HeaderBase.defaultProps = {
