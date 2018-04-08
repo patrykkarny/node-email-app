@@ -4,7 +4,7 @@ import { reduxForm, Field } from 'redux-form';
 import { Link } from 'react-router-dom';
 
 import { validateEmails } from 'utils/validateEmails';
-import { surveyFormSchema } from 'consts';
+import { surveyFormSchema, SURVEY_FORM } from 'consts';
 
 import { SurveyField } from './SurveyField';
 
@@ -18,8 +18,8 @@ const renderedFields = surveyFormSchema.map(({ label, name }) => (
   />
 ));
 
-const SurveyFormBase = ({ handleSubmit }) => (
-  <form noValidate onSubmit={handleSubmit(values => console.log(values))}>
+const SurveyFormBase = ({ handleSubmit, onSurveySubmit }) => (
+  <form noValidate onSubmit={handleSubmit(onSurveySubmit)}>
     {renderedFields}
     <Link
       className="red btn-flat left white-text"
@@ -39,13 +39,14 @@ const SurveyFormBase = ({ handleSubmit }) => (
 
 SurveyFormBase.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
+  onSurveySubmit: PropTypes.func.isRequired,
 };
 
 export const SurveyForm = reduxForm({
   validate: (values) => {
     const errors = {};
 
-    errors.emails = validateEmails(values.emails);
+    errors.recipients = validateEmails(values.recipients);
 
     surveyFormSchema.forEach(({ name, error }) => {
       if (!values[name]) {
@@ -55,5 +56,6 @@ export const SurveyForm = reduxForm({
 
     return errors;
   },
-  form: 'surveyForm',
+  form: SURVEY_FORM,
+  destroyOnUnmount: false,
 })(SurveyFormBase);

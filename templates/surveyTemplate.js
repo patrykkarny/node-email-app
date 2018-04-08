@@ -1,4 +1,4 @@
-const { redirectDomain } = require('../config/prod');
+const { redirectDomain } = require('../config/keys');
 
 module.exports = ({ body }) => `
   <!DOCTYPE html>
