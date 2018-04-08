@@ -11,7 +11,8 @@
     "start": "node index.js",
     "server": "nodemon index.js",
     "client": "yarn --cwd client start",
-    "start:dev": "concurrently \"yarn server\" \"yarn client\"",
+    "webhook": "./scripts/webhook.sh",
+    "start:dev": "concurrently \"yarn server\" \"yarn client\" \"yarn webhook\"",
     "heroku-postbuild": "YARN_PRODUCTION=false yarn --cwd client install && yarn --cwd client build"
   },
   "dependencies": {
@@ -30,6 +31,7 @@
     "create-react-app": "^1.5.2",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.10.0"
+    "eslint-plugin-import": "^2.10.0",
+    "localtunnel": "^1.9.0"
   }
 }
