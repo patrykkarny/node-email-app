@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+const Path = require('path-parser').default;
+const { URL } = require('url');
+const { isEqual } = require('lodash');
 
 const Mailer = require('../services/Mailer');
 const surveyTemplate = require('../templates/surveyTemplate');
@@ -8,12 +11,42 @@ const requireCredits = require('../middlewares/requireCredits');
 const Survey = mongoose.model('surveys');
 
 module.exports = (app) => {
-  app.get('/api/surveys/confirmation', (req, res) => {
+  app.get('/api/surveys/:surveyId/:choice', (req, res) => {
     res.send('Thank you for your feedback!');
   });
 
   app.post('/api/surveys/webhooks', (req, res) => {
-    console.log(req.body);
+    const path = new Path('/api/surveys/:surveyId/:choice');
+
+    req.body
+      .reduce((total, { url, email }) => {
+        const { pathname } = new URL(url);
+        const match = path.test(pathname);
+
+        if (match) {
+          const { choice, surveyId } = match;
+          const event = { choice, email, surveyId };
+          const isExist = total.find(e => isEqual(e, surveyId));
+
+          if (!isExist) {
+            total = [...total, event]; // eslint-disable-line
+          }
+        }
+
+        return total;
+      }, [])
+      .forEach(({ email, choice, surveyId }) => {
+        Survey.updateOne({
+          _id: surveyId,
+          recipients: {
+            $elemMatch: { email, responded: false },
+          },
+        }, {
+          $inc: { [choice]: 1 },
+          $set: { 'recipients.$.responded': true },
+          lastResponded: new Date(),
+        }).exec();
+      });
 
     res.send({});
   });

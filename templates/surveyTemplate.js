@@ -1,6 +1,6 @@
 const { redirectDomain } = require('../config/keys');
 
-module.exports = ({ body }) => `
+module.exports = survey => `
   <!DOCTYPE html>
   <html lang="en">
   <head>
@@ -13,10 +13,10 @@ module.exports = ({ body }) => `
     <div style="text-align: center;">
       <h3>I'd like your input!</h3>
       <p>Please answer the following question:</p>
-      <p>${body}</p>
+      <p>${survey.body}</p>
       <div style="text-align: center;">
-        <a href="${redirectDomain}/api/surveys/confirmation">Yes</a>
-        <a href="${redirectDomain}/api/surveys/confirmation" style="margin-left: 20px;">No</a>
+        <a href="${redirectDomain}/api/surveys/${survey.id}/yes">Yes</a>
+        <a href="${redirectDomain}/api/surveys/${survey.id}/no" style="margin-left: 20px;">No</a>
       </div>
     </div>
   </body>
